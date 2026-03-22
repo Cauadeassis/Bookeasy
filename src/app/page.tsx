@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./styles.module.css";
+import styles from "./styles.module.scss";
+import { createAccount } from "../services/authentication";
+import { sendEmail } from "../services/email";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
+  const [openedBooked, setOpenedBooked] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
-  const [aberto, setAberto] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -16,15 +17,25 @@ export default function Login() {
     setPassword(event.target.value);
   };
 
+  async function handleCreateAccount() {
+    const error = await createAccount({ email, password });
+    if (error) setError(error);
+  }
+  async function handleSendCode() {
+    sendEmail({
+      email: "pageasy.muriae@gmail.com",
+      emailType: "forgot-password",
+    });
+  }
+
   return (
     <div className={styles.body}>
       <div className={styles.book}>
         <header
-          className={`${styles.bookCover} ${aberto ? styles.openedCover : ""}`}
-          onClick={() => setAberto(!aberto)}
+          className={`${styles.bookCover} ${openedBooked ? styles.openedCover : ""}`}
+          onClick={() => setOpenedBooked(!openedBooked)}
         >
           <div className={styles.coverFront}>
-            {/* conteúdo que aparece quando fechado*/}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="#463131"
@@ -35,12 +46,10 @@ export default function Login() {
             </svg>
             <h1>Bookeasy</h1>
           </div>
-          <div className={styles.coverBack}>
-            {/* conteúdo que aparece quando aberto*/}
-          </div>
+          <div className={styles.coverBack} />
         </header>
         <main
-          className={`${styles.bookContent} ${aberto ? styles.openedContent : ""}`}
+          className={`${styles.bookContent} ${openedBooked ? styles.openedContent : ""}`}
         >
           <div className={styles.fieldsContainer}>
             <div className={styles.field}>
@@ -65,6 +74,7 @@ export default function Login() {
             </div>
           </div>
           <button>Cadastrar</button>
+          <button>Entrar</button>
         </main>
       </div>
     </div>
