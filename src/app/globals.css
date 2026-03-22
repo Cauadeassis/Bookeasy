@@ -1,5 +1,17 @@
+:root {
+  --background: rgb(167, 111, 86);
+  --back-app: wheat;
+  --text1: rgb(167, 111, 86);
+  --border: rgb(116, 76, 58);
+  --hover: rgb(87, 56, 42);
+}
+
 * {
   padding: 0;
   margin: 0;
+  transition: 0.5s;
+  font-family: sans-serif;
+  border: none;
+  outline: none;
   box-sizing: border-box;
 }
