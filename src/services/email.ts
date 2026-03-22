@@ -1,4 +1,4 @@
-import { SendEmailProps } from "../../infra/email/sender";
+import { SendEmailProps } from "../infra/email/sender";
 
 export async function sendEmail({
   email,
