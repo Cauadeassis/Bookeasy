@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import styles from "./styles.module.css";
-import { createAccount } from "../infra/services/authentication";
-import { sendEmail } from "../infra/services/email";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
@@ -11,16 +9,6 @@ export default function Login() {
   const [aberto, setAberto] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleCreateAccount() {
-    const error = await createAccount({ email, password });
-    if (error) setError(error);
-  }
-  async function handleSendCode() {
-    sendEmail({
-      email: "pageasy.muriae@gmail.com",
-      emailType: "forgot-password",
-    });
-  }
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -76,7 +64,7 @@ export default function Login() {
               />
             </div>
           </div>
-          <button onClick={handleCreateAccount}>Cadastrar</button>
+          <button>Cadastrar</button>
         </main>
       </div>
     </div>
