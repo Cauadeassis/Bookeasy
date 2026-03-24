@@ -4,6 +4,17 @@
   --text1: rgb(167, 111, 86);
   --border: rgb(116, 76, 58);
   --hover: rgb(87, 56, 42);
+  --bg: lab(53.67% 17.71 22.75);
+  --panel: rgb(107, 62, 46);
+  --panel-alt: rgb(125, 74, 53);
+  --accent: rgb(230, 207, 167);
+  --accent2: rgb(212, 180, 131);
+  --text-light: rgb(245, 236, 224);
+  --text-muted: rgb(201, 168, 130);
+  --shadow: rgba(40, 18, 8, 0.35);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.3s ease;
 }
 
 * {
@@ -11,7 +22,9 @@
   margin: 0;
   transition: 0.5s;
   font-family: sans-serif;
+  list-style: none;
   border: none;
   outline: none;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }

@@ -1,0 +1,179 @@
+@use "../../styles/mixins";
+
+.body {
+  width: 100%;
+  height: 100vh;
+  background-color: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & .book {
+    position: relative;
+    width: 30%;
+    height: 80%;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.438);
+    perspective: 1500px;
+
+    @media (max-width: 1000px) {
+      width: min(400px, 80%);
+      perspective: 400px;
+    }
+
+    & .bookCover {
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      box-shadow: 8px 0px 10px rgba(0, 0, 0, 0.438);
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      z-index: 2;
+      transition: transform 1s;
+
+      @media (max-width: 1000px) {
+        transition: all 1s ease-in-out;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        & h1,
+        & svg {
+          transform: scale(1.1);
+          transition: transform 0.5s;
+        }
+      }
+
+      & .coverFront,
+      & .coverBack {
+        @include mixins.flexColumn;
+        position: absolute;
+        inset: 0;
+        border-radius: 8px;
+        background-color: var(--back-app);
+        color: var(--text1);
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        backface-visibility: hidden;
+      }
+
+      & .coverBack {
+        transform: rotateY(180deg);
+      }
+
+      & h1 {
+        font-size: 3rem;
+
+        @media (max-width: 500px) {
+          font-size: 2rem;
+        }
+      }
+
+      & svg {
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    & .openedCover {
+      transform: rotateY(-160deg);
+    }
+
+    & .bookContent {
+      @include mixins.flexColumn;
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      background-color: var(--border);
+      color: var(--back-app);
+      align-items: center;
+      transition: 1s;
+
+      & .fieldsContainer {
+        @include mixins.flexColumn;
+        margin-top: 2rem;
+        flex: 1;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+
+        & .field {
+          @include mixins.flexColumn;
+          width: 90%;
+          gap: 0.5rem;
+
+          & .passwordWrapper {
+            display: flex;
+            position: relative;
+            align-items: center;
+
+            & button {
+              position: absolute;
+              background: transparent;
+              right: 0;
+              margin: 0;
+              width: 10%;
+              padding: 0.93rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              &:hover {
+                transform: scale(1.2);
+              }
+            }
+          }
+        }
+      }
+
+      & input,
+      & button {
+        padding: 1rem;
+        border-radius: 4px;
+        color: var(--back-app);
+        background-color: var(--text1);
+        transition: 0.3s;
+      }
+
+      & input {
+        width: 100%;
+        font-size: 1rem;
+
+        &::placeholder {
+          color: color-mix(in srgb, var(--back-app) 50%, transparent);
+        }
+
+        &:hover {
+          background-color: var(--hover);
+        }
+      }
+
+      & button {
+        width: 90%;
+        font-size: 1rem;
+        margin-top: auto;
+        margin-bottom: 1.5rem;
+
+        &:hover {
+          cursor: pointer;
+          background-color: var(--hover);
+        }
+      }
+
+      & .messageSection {
+        width: 100%;
+
+        & p {
+          margin: 0.5rem auto;
+          max-width: 90%;
+          text-align: center;
+          font-size: 1rem;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}

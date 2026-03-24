@@ -1,4 +1,6 @@
 const errorMessages = {
+  missingFields: "Preencha todos os campos",
+  wrongFields: "Credenciais inválidas",
   invalidPassword:
     "A senha deve ter pelo menos 8 dígitos, letra maiúscula e um símbolo",
   invalidEmail: "O email deve terminar com @gmail.com",
@@ -8,7 +10,7 @@ const errorMessages = {
 
 type ErrorMessage = (typeof errorMessages)[keyof typeof errorMessages];
 
-interface CreateAccountProps {
+interface AccountProps {
   email: string;
   password: string;
 }
@@ -28,12 +30,14 @@ export function emailIsInvalid(email: string): boolean {
 export async function createAccount({
   email,
   password,
-}: CreateAccountProps): Promise<ErrorMessage | null> {
-  if (passwordIsInvalid(password)) return errorMessages.invalidPassword;
+}: AccountProps): Promise<ErrorMessage | null> {
+  if (!email || !password) return errorMessages.missingFields;
 
   if (emailIsInvalid(email)) return errorMessages.invalidEmail;
 
-  const response = await fetch("http://localhost:3000/api/create-account", {
+  if (passwordIsInvalid(password)) return errorMessages.invalidPassword;
+
+  const response = await fetch("/api/create-account", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -42,6 +46,31 @@ export async function createAccount({
   if (!response.ok) {
     return response.status === 409
       ? errorMessages.emailAlreadyExists
+      : errorMessages.internalError;
+  }
+
+  return null;
+}
+
+export async function loginAccount({
+  email,
+  password,
+}: AccountProps): Promise<ErrorMessage | null> {
+  if (!email || !password) return errorMessages.missingFields;
+
+  if (emailIsInvalid(email)) return errorMessages.invalidEmail;
+
+  if (passwordIsInvalid(password)) return errorMessages.invalidPassword;
+
+  const response = await fetch("/api/login-account", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!response.ok) {
+    return response.status === 401
+      ? errorMessages.wrongFields
       : errorMessages.internalError;
   }
 
